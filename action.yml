@@ -18,8 +18,8 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   env:
-    REPOSITORY_VAR: ${{ vars.REPOSITORY_VAR }}
-    ORGANIZATION_VAR: ${{ vars.ORGANIZATION_VAR }}
+    # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs#github-context
+    REPO_OWNER_VAR: ${{ github.repository }}
     INPUT_ARTIFACT_VAR: ${{ inputs.input-artifact }}
     OUTPUT_ARTIFACT_VAR: ${{ inputs.output-artifact }}
   args:
