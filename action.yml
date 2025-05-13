@@ -3,25 +3,20 @@ name: 'Hello World'
 description: 'Greet someone and record the time'
 inputs:
   gpg-key:
-    description: 'GPG key to use'
+    description: 'GPG key file to use'
     required: true
   gpg-passphrase:
     description: 'GPG key to use'
     required: true
-  input-artifact:
-    description: 'Artifact ID to read'
-    required: true
-  output-artifact:
-    description: 'Artifact ID to write with signatures'
-    required: true
+  input-path:
+    description: 'Path to work on'
+    required: true    
 runs:
   using: 'docker'
   image: 'Dockerfile'
   env:
     # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs#github-context
-    REPO_OWNER_VAR: ${{ github.repository }}
-    INPUT_ARTIFACT_VAR: ${{ inputs.input-artifact }}
-    OUTPUT_ARTIFACT_VAR: ${{ inputs.output-artifact }}
+    GPG_KEY_VAR: ${{ inputs.gpg-key }}
+    INPUT_PATH_VAR: ${{ inputs.input-path }}
   args:
-    - ${{ inputs.who-to-greet }}
-    
+    - ${{ inputs.gpg-passphrase }}
