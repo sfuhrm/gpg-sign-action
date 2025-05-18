@@ -1,4 +1,4 @@
-#!/bin/sh -l -e
+#!/bin/sh -le
 
 # https://docs.github.com/en/actions/sharing-automations/creating-actions/creating-a-docker-container-action#accessing-files-created-by-a-container-action
 
