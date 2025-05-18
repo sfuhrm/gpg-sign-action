@@ -31,6 +31,10 @@ fi
 find "/github/workspace/${INPUT_PATH_VAR}" -type f | while read file; do
     debug "Signing file: $file"
     gpg --pinentry-mode=loopback --passphrase "$1" --armor --detach-sign "$file"
+    EXITCODE=$?
+    if [ $EXITCODE -ne 0 ]; then
+        echo "GPG detach sign of file failed with exitcode $EXITCODE for: $file"
+    fi
 done
 
 # stop GPG agent
