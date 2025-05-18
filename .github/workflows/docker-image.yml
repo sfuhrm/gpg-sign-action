@@ -24,12 +24,23 @@ jobs:
       run: |
         mkdir -p github/workspace/testdir
         echo "test" > github/workspace/testdir/test
-        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR="foobar" -eINPUT_PATH_VAR=testdir  gpg-sign-action WRONG_PASSPHRASE
+        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR="foobar" -eINPUT_PATH_VAR=testdir  gpg-sign-action WRONG_PASSPHRASE 2> stderr
+        if [ $? != 2 ]; then
+          echo "Expected exit code 2"
+          exit 2
+        fi
+        grep stderr "Key needs to begin with: -----BEGIN PGP PRIVATE KEY BLOCK-----" || (echo "Expected key block output"; exit 1)
 
     - name: Test with wrong passphrase
       run: |
         mkdir -p github/workspace/testdir
-        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR="$GPG_KEYFILE" -eINPUT_PATH_VAR=testdir  gpg-sign-action WRONG_PASSPHRASE
+        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR="$GPG_KEYFILE" -eINPUT_PATH_VAR=testdir  gpg-sign-action WRONG_PASSPHRASE 2> stderr
+        echo $?
+        if [ $? != 2 ]; then
+          echo "Expected exit code 2"
+          exit 2
+        fi
+        cat stderr
    
     - name: Test with right passphrase
       run: |
