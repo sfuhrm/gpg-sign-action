@@ -1,0 +1,39 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      GPG_KEYFILE: ${ secrets.GPG_KEYFILE }
+      GPG_PASSPHRASE: ${ secrets.GPG_PASSPHRASE }
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag gpg-sign-action
+
+    - name: Test with wrong keyfile
+      run: |
+        mkdir -p github/workspace/testdir
+        echo "test" > github/workspace/testdir/test
+        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR="foobar" -eINPUT_PATH_VAR=testdir  gpg-sign-action WRONG_PASSPHRASE
+
+    - name: Test with wrong passphrase
+      run: |
+        mkdir -p github/workspace/testdir
+        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR="$GPG_KEYFILE" -eINPUT_PATH_VAR=testdir  gpg-sign-action WRONG_PASSPHRASE
+   
+    - name: Test with right passphrase
+      run: |
+        mkdir -p github/workspace/testdir
+        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR="$GPG_KEYFILE" -eINPUT_PATH_VAR=testdir  gpg-sign-action ${GPG_PASSPHRASE}
+  
