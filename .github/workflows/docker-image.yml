@@ -31,7 +31,7 @@ jobs:
         gpg --version
 
         echo "Importing pubkey"
-        echo "${GPG_PUBKEY}" | gpg import
+        echo "${GPG_PUBKEY}" | gpg --import
 
         echo "Verifying signature"
         gpg --verify github/workspace/testdir/testfile.asc
