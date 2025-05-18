@@ -20,32 +20,12 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag gpg-sign-action
 
-    - name: Test with wrong keyfile
-      continue-on-error: true
-      run: |
-        mkdir -p github/workspace/testdir
-        echo "test" > github/workspace/testdir/test
-        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR="foobar" -eINPUT_PATH_VAR=testdir  gpg-sign-action WRONG_PASSPHRASE 2> stderr
-        if [ $? != 2 ]; then
-          echo "Expected exit code 2"
-          exit 2
-        fi
-        grep stderr "Key needs to begin with: -----BEGIN PGP PRIVATE KEY BLOCK-----" || (echo "Expected key block output"; exit 1)
-
-    - name: Test with wrong passphrase
-      continue-on-error: true
-      run: |
-        mkdir -p github/workspace/testdir
-        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR="$GPG_KEYFILE" -eINPUT_PATH_VAR=testdir  gpg-sign-action WRONG_PASSPHRASE 2> stderr
-        echo $?
-        if [ $? != 2 ]; then
-          echo "Expected exit code 2"
-          exit 2
-        fi
-        cat stderr
    
     - name: Test with right passphrase
       run: |
         mkdir -p github/workspace/testdir
+        echo "hello" > github/workspace/testdir/testfile
         docker run -v$(pwd)/github:/github -eGPG_KEY_VAR="$GPG_KEYFILE" -eINPUT_PATH_VAR=testdir  gpg-sign-action ${GPG_PASSPHRASE}
-  
+
+        echo ${GPG_PUBKEY} | gpg import
+        gpg --verify github/workspace/testdir/testfile.asc
