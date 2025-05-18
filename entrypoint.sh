@@ -1,4 +1,4 @@
-#!/bin/sh -le
+#!/bin/sh -l
 
 DEBUG=1
 debug()
