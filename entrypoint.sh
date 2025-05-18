@@ -8,10 +8,11 @@ gpg-agent --daemon --batch --disable-scdaemon
 # check and import GPG key
 KEY=/tmp/gpgkey
 
+echo "${GPG_KEY_VAR}" > $KEY
+
 grep "-----BEGIN PGP PRIVATE KEY BLOCK-----" $KEY || (echo "Key needs to begin with: -----BEGIN PGP PRIVATE KEY BLOCK-----" >&2; exit 2)
 grep "-----END PGP PRIVATE KEY BLOCK-----" $KEY || (echo "Key needs to end with: -----END PGP PRIVATE KEY BLOCK-----" >&2; exit 2)
 
-echo "${GPG_KEY_VAR}" > $KEY
 chmod 0700 $KEY
 gpg --batch --import $KEY
 rm -f $KEY
