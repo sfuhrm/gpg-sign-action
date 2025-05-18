@@ -1,5 +1,6 @@
 # action.yml
 name: 'gpg-sign-action'
+author: Stephan Fuhrmann
 description: 'GPG sign files with detached ASCII signature'
 inputs:
   gpg-key:
