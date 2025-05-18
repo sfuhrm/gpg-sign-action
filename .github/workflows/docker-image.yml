@@ -27,5 +27,5 @@ jobs:
         echo "hello" > github/workspace/testdir/testfile
         docker run -v$(pwd)/github:/github -eGPG_KEY_VAR -eINPUT_PATH_VAR=testdir  gpg-sign-action "${GPG_PASSPHRASE}"
 
-        echo ${GPG_PUBKEY} | gpg import
+        echo "${GPG_PUBKEY}" | gpg import
         gpg --verify github/workspace/testdir/testfile.asc
