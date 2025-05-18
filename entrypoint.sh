@@ -14,24 +14,12 @@ debug()
 debug "Starting agent"
 gpg-agent --daemon --batch --disable-scdaemon
 
-debug "GPG key lines: $(echo "$GPG_KEY_VAR" | wc -l)"
-debug "Counting blocklines"
-echo "$GPG_KEY_VAR" | grep -c "PRIVATE KEY BLOCK"
-BLOCKLINES=$(echo "$GPG_KEY_VAR" | grep -c "PRIVATE KEY BLOCK")
-debug "Blocklines: $BLOCKLINES"
-
-if [ $BLOCKLINES -ne 2 ]; then
-    echo "The GPG key does not contain two PRIVATE KEY BLOCk markers, but ${BLOCKLINES}."
-    echo "Please ensure your key is in ASCII ARMOR (--armor) format."
-    exit 1
-fi
-
 # check and import GPG key
 debug "Import key"
 echo "${GPG_KEY_VAR}"  | gpg --batch --import
 debug "Imported key"
 
-PUBKEYLINES=$(gpg --list-keys|grep -c -E "^pub")
+PUBKEYLINES=$(gpg --list-keys|grep -c -E "^pub ")
 debug "Pubkeys: $PUBKEYLINES"
 if [ $PUBKEYLINES -eq 0 ]; then
     echo "The GPG import failed, expected at least 1, but got ${PUBKEYLINES} pubkeys."
