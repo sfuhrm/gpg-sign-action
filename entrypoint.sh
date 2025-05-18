@@ -7,5 +7,8 @@ gpg --batch --import "/github/workspace/${GPG_KEY_VAR}"
 
 # find all files
 find "/github/workspace/${INPUT_PATH_VAR}" -type f | while read file; do
-    gpg --pinentry-mode=loopback --passphrase "$1" --armor --detach-sign hosts
+    gpg --pinentry-mode=loopback --passphrase "$1" --armor --detach-sign "$file"
 done
+
+# remove GPG dir from container
+rm -fr ~/.gnupg
