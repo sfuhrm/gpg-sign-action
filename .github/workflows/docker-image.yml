@@ -10,8 +10,8 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      GPG_KEY_VAR: ${ secrets.GPG_KEYFILE }
-      GPG_PASSPHRASE: ${ secrets.GPG_PASSPHRASE }
+      GPG_KEY_VAR: ${{ secrets.GPG_KEYFILE }}
+      GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
     permissions:
       contents: read
     steps:

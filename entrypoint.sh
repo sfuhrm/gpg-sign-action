@@ -23,6 +23,7 @@ PUBKEYLINES=$(gpg --list-keys|grep -c -E "^pub ")
 debug "Pubkeys: $PUBKEYLINES"
 if [ $PUBKEYLINES -eq 0 ]; then
     echo "The GPG import failed, expected at least 1, but got ${PUBKEYLINES} pubkeys."
+    echo "Please ensure that the GPG key you passed is valid."
     exit 2
 fi
 
