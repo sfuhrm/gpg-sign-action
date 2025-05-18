@@ -5,7 +5,7 @@
 # start GPG agent
 gpg-agent --daemon --batch --disable-scdaemon
 
-BLOCKLINES=$(echo "${GPG_KEY_VAR}" | grep -c "PRIVATE KEY BLOCK" /tmp/priv.asc)
+BLOCKLINES=$(echo "${GPG_KEY_VAR}" | grep -c "PRIVATE KEY BLOCK")
 
 if [ $BLOCKLINES != "2" ]; then
     echo "The GPG key does not contain two PRIVATE KEY BLOCk markers, but ${BLOCKLINES}."
