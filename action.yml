@@ -8,7 +8,7 @@ inputs:
   gpg-passphrase:
     description: 'GPG key unlocking passphrase'
     required: true
-  input-path:
+  path:
     description: 'Path to work on'
     required: true    
 runs:
@@ -17,6 +17,6 @@ runs:
   env:
     # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs#github-context
     GPG_KEY_VAR: ${{ inputs.gpg-key }}
-    INPUT_PATH_VAR: ${{ inputs.input-path }}
+    INPUT_PATH_VAR: ${{ inputs.path }}
   args:
     - ${{ inputs.gpg-passphrase }}
