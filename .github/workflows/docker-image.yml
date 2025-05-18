@@ -2,9 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
 
@@ -14,7 +12,8 @@ jobs:
     env:
       GPG_KEYFILE: ${ secrets.GPG_KEYFILE }
       GPG_PASSPHRASE: ${ secrets.GPG_PASSPHRASE }
-
+    permissions:
+      contents: read
     steps:
     - uses: actions/checkout@v4
 
