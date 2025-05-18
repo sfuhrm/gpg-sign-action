@@ -3,10 +3,11 @@
 # https://docs.github.com/en/actions/sharing-automations/creating-actions/creating-a-docker-container-action#accessing-files-created-by-a-container-action
 
 # start GPG agent
-gpg-agent --daemon --batch
+gpg-agent --daemon --batch --disable-scdaemon
 
 # import GPG key
 echo "${GPG_KEY_VAR}" > /tmp/gpgkey
+chmod 0700 /tmp/gpgkey
 gpg --batch --import "/tmp/gpgkey"
 rm -f /tmp/gpgkey
 
