@@ -3,7 +3,7 @@ name: 'gpg-sign-action'
 description: 'GPG sign files with detached ASCII signature'
 inputs:
   gpg-key:
-    description: 'GPG key file to use'
+    description: 'GPG key file to use as a textual PGP PRIVATE KEY BLOCK'
     required: true
   gpg-passphrase:
     description: 'GPG key unlocking passphrase'

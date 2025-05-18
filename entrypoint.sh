@@ -3,7 +3,9 @@
 # https://docs.github.com/en/actions/sharing-automations/creating-actions/creating-a-docker-container-action#accessing-files-created-by-a-container-action
 
 # import GPG key
-gpg --batch --import "/github/workspace/${GPG_KEY_VAR}"
+echo "${GPG_KEY_VAR}" > /tmp/gpgkey
+gpg --batch --import "/tmp/gpgkey"
+rm -f /tmp/gpgkey
 
 # find all files
 find "/github/workspace/${INPUT_PATH_VAR}" -type f | while read file; do
