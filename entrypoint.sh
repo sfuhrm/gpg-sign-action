@@ -37,6 +37,7 @@ find "/github/workspace/${INPUT_PATH_VAR}" -type f | while read file; do
     EXITCODE=$?
     if [ $EXITCODE -ne 0 ]; then
         echo "GPG detach sign of file failed with exitcode $EXITCODE for: $file"
+        echo "Passphrase MD5: $(echo -n $1 | md5sum -b)"
     fi
 done
 
