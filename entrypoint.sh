@@ -1,6 +1,5 @@
 #!/bin/sh -le
 
-
 DEBUG=1
 debug()
 {
@@ -15,9 +14,9 @@ debug()
 debug "Starting agent"
 gpg-agent --daemon --batch --disable-scdaemon
 
-debug "GPG key lines: $(echo $GPG_KEY_VAR | wc -l)"
+debug "GPG key lines: $(echo "$GPG_KEY_VAR" | wc -l)"
 debug "Counting blocklines"
-BLOCKLINES=$(echo "${GPG_KEY_VAR}" | grep -c "PRIVATE KEY BLOCK")
+BLOCKLINES=$(echo "$GPG_KEY_VAR" | grep -c "PRIVATE KEY BLOCK")
 debug "Blocklines: $BLOCKLINES"
 
 if [ $BLOCKLINES -ne 2 ]; then
