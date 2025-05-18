@@ -1,6 +1,6 @@
 # action.yml
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'gpg-sign-action'
+description: 'GPG sign files with detached ASCII signature'
 inputs:
   gpg-key:
     description: 'GPG key file to use'
