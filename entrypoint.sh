@@ -19,7 +19,7 @@ debug "Counting blocklines"
 BLOCKLINES=$(echo "${GPG_KEY_VAR}" | grep -c "PRIVATE KEY BLOCK")
 debug "Blocklines: $BLOCKLINES"
 
-if [ $BLOCKLINES != "2" ]; then
+if [ $BLOCKLINES -ne 2 ]; then
     echo "The GPG key does not contain two PRIVATE KEY BLOCk markers, but ${BLOCKLINES}."
     echo "Please ensure your key is in ASCII ARMOR (--armor) format."
     exit 1
@@ -32,7 +32,7 @@ debug "Imported key"
 
 PUBKEYLINES=$(gpg --list-keys|grep -c -E "^pub")
 debug "Pubkeys: $PUBKEYLINES"
-if [ $PUBKEYLINES == "0" ]; then
+if [ $PUBKEYLINES -eq 0 ]; then
     echo "The GPG import failed, expected at least 1, but got ${PUBKEYLINES} pubkeys."
     exit 2
 fi
