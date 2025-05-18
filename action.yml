@@ -6,7 +6,7 @@ inputs:
     description: 'GPG key file to use'
     required: true
   gpg-passphrase:
-    description: 'GPG key to use'
+    description: 'GPG key unlocking passphrase'
     required: true
   input-path:
     description: 'Path to work on'
