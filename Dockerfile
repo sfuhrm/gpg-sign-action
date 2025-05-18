@@ -5,7 +5,7 @@ FROM alpine:3.21.3
 COPY entrypoint.sh /entrypoint.sh
 
 # install needed programs
-RUN apk add gpg zip jq github-cli
+RUN apk add gpg gpg-agent
 
 # Code file to execute when the docker container starts up (`entrypoint.sh`)
 ENTRYPOINT ["/entrypoint.sh"]
