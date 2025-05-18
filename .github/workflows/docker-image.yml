@@ -10,7 +10,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      GPG_KEYFILE: ${ secrets.GPG_KEYFILE }
+      GPG_KEY_VAR: ${ secrets.GPG_KEYFILE }
       GPG_PASSPHRASE: ${ secrets.GPG_PASSPHRASE }
     permissions:
       contents: read
@@ -25,7 +25,7 @@ jobs:
       run: |
         mkdir -p github/workspace/testdir
         echo "hello" > github/workspace/testdir/testfile
-        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR="$GPG_KEYFILE" -eINPUT_PATH_VAR=testdir  gpg-sign-action ${GPG_PASSPHRASE}
+        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR -eINPUT_PATH_VAR=testdir  gpg-sign-action "${GPG_PASSPHRASE}"
 
         echo ${GPG_PUBKEY} | gpg import
         gpg --verify github/workspace/testdir/testfile.asc
