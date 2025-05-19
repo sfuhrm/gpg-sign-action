@@ -1,0 +1,29 @@
+name: Trivy Scan
+
+on:
+  schedule:
+    - cron: '0 3 * * *'  # Daily 03:00 UTC
+  workflow_dispatch:       # manual start via UI
+
+jobs:
+  scan:
+    name: Scan Dockerfile & Image with Trivy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install Trivy
+      uses: aquasecurity/trivy-action@master
+      with:
+        version: latest
+
+    - name: Scan Dockerfile (Build-Context)
+      run: trivy config --exit-code 1 --severity HIGH,CRITICAL .
+
+    - name: Build Docker image
+      run: docker build -t my-app-image .
+
+    - name: Scan built Docker image
+      run: trivy image --exit-code 1 --severity HIGH,CRITICAL my-app-image
