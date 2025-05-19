@@ -26,7 +26,7 @@ jobs:
       run: |
         mkdir -p github/workspace/testdir
         echo "hello" > github/workspace/testdir/testfile
-        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR -eINPUT_PATH_VAR=testdir  gpg-sign-action "${GPG_PASSPHRASE}"
+        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR -eINPUT_PATH_VAR=testdir -eGPG_PASSPHRASE gpg-sign-action
 
         echo "GPG version:"
         gpg --version
@@ -46,7 +46,7 @@ jobs:
         mkdir -p github/workspace/testdir
         echo "hello" > github/workspace/testdir/testfile
         set +e
-        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR -eINPUT_PATH_VAR=testdir  gpg-sign-action "THISISNOTYOURPASSPHRASE"
+        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR -eINPUT_PATH_VAR=testdir -eGPG_PASSPHRASE=wrong gpg-sign-action
         RETURNCODE=$?
         set +e
         if [ "$RETURNCODE" -eq 0 ]; then
@@ -62,7 +62,7 @@ jobs:
         mkdir -p github/workspace/testdir
         echo "hello" > github/workspace/testdir/testfile
         set +e
-        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR=foobar -eINPUT_PATH_VAR=testdir  gpg-sign-action "THISISNOTYOURPASSPHRASE"
+        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR=foobar -eINPUT_PATH_VAR=testdir -eGPG_PASSPHRASE gpg-sign-action
         RETURNCODE=$?
         set +e
         if [ "$RETURNCODE" -eq 0 ]; then
