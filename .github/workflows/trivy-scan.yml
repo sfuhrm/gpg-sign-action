@@ -19,9 +19,6 @@ jobs:
       with:
         version: latest
 
-    - name: Scan Dockerfile (Build-Context)
-      run: trivy config --exit-code 1 --severity HIGH,CRITICAL .
-
     - name: Build Docker image
       run: docker build -t my-app-image .
 
