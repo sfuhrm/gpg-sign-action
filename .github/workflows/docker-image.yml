@@ -55,3 +55,20 @@ jobs:
         else
           echo "✅ Docker run failed as expected (Returncode $RETURNCODE)"
         fi
+
+    - name: Test with wrong key
+      run: |
+        rm -fr github
+        mkdir -p github/workspace/testdir
+        echo "hello" > github/workspace/testdir/testfile
+        set +e
+        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR=foobar -eINPUT_PATH_VAR=testdir  gpg-sign-action "THISISNOTYOURPASSPHRASE"
+        RETURNCODE=$?
+        set +e
+        if [ "$RETURNCODE" -eq 0 ]; then
+          echo "❌ Error: Docker run was successful, but should have failed"
+          exit 1
+        else
+          echo "✅ Docker run failed as expected (Returncode $RETURNCODE)"
+        fi
+  
