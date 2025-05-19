@@ -45,5 +45,13 @@ jobs:
         rm -fr github
         mkdir -p github/workspace/testdir
         echo "hello" > github/workspace/testdir/testfile
-        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR -eINPUT_PATH_VAR=testdir  gpg-sign-action "THISISNOTYOURPASSPHRASE" || true; export RETURNCODE=$?
-        echo "Returncode is $RETURNCODE"
+        set +e
+        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR -eINPUT_PATH_VAR=testdir  gpg-sign-action "THISISNOTYOURPASSPHRASE"
+        RETURNCODE=$?
+        set +e
+        if [ "$RETURNCODE" -eq 0 ]; then
+          echo "❌ Error: Docker run was successful, but should have failed"
+          exit 1
+        else
+          echo "✅ Docker run failed as expected (Returncode $RETURNCODE)"
+        fi
