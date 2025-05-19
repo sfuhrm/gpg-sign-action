@@ -1,5 +1,8 @@
 # gpg sign action
 
+[![Docker Image CI](https://github.com/sfuhrm/gpg-sign-action/actions/workflows/docker-image.yml/badge.svg)](https://github.com/sfuhrm/gpg-sign-action/actions/workflows/docker-image.yml)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 This action detach-signs files in a path using GPG (GNU Privacy Guard) in a filesystem path.
 As a result you'll get `.asc` signatures in your path for every file. 
 
