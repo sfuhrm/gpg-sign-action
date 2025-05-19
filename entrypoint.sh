@@ -19,10 +19,10 @@ debug "Import key"
 echo "${GPG_KEY_VAR}"  | gpg --batch --no-tty --import
 debug "Imported key"
 
-PUBKEYLINES=$(gpg --list-keys|grep -c -E "^pub ")
-debug "Pubkeys: $PUBKEYLINES"
-if [ $PUBKEYLINES -eq 0 ]; then
-    echo "The GPG import failed, expected at least 1, but got ${PUBKEYLINES} pubkeys."
+PUBKEYLINES=$(gpg --list-secret-keys|grep -c -E "^sec ")
+debug "Seckeys: $SECKEYLINES"
+if [ $SECKEYLINES -eq 0 ]; then
+    echo "The GPG import failed, expected at least 1, but got ${SECKEYLINES} seckeys."
     echo "Please ensure that the GPG key you passed is valid."
     exit 2
 fi
