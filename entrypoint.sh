@@ -19,6 +19,9 @@ debug "Import key"
 echo "${GPG_KEY_VAR}"  | gpg --batch --no-tty --import
 debug "Imported key"
 
+KEYID=$(gpg --list-secret-keys | grep -A1 -E "^sec "|tail -n 1)
+debug "Secret key ID: $KEYID"
+
 PUBKEYLINES=$(gpg --list-keys|grep -c -E "^pub ")
 debug "Pubkeys: $PUBKEYLINES"
 if [ $PUBKEYLINES -eq 0 ]; then
@@ -30,7 +33,7 @@ fi
 # find all files
 find "/github/workspace/${INPUT_PATH_VAR}" -type f | while read file; do
     debug "Signing file: $file"
-    echo -n "$1" | gpg --batch --no-tty --pinentry-mode=loopback --passphrase-fd 0 --armor --detach-sign "$file"
+    gpg --batch --no-tty --pinentry-mode=loopback --local-user $KEYID --passphrase "$1" --armor --detach-sign "$file"
     EXITCODE=$?
     if [ $EXITCODE -ne 0 ]; then
         echo "GPG detach sign of file failed with exitcode $EXITCODE for: $file"
