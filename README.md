@@ -32,7 +32,6 @@ Note that this path must be in your github working directory.
 ## Example usage
 
 ```
-- name: GPG-sign files
 uses: sfuhrm/gpg-sign-action@main
 with:
     path: my-file-path
