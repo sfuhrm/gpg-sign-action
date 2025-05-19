@@ -22,8 +22,8 @@ debug "Imported key"
 SECKEYLINES=$(gpg --list-secret-keys | grep -c -E "^sec ")
 debug "Seckeys: $SECKEYLINES"
 if [ "$SECKEYLINES" -eq 0 ]; then
-    echo "The GPG import failed, expected at least 1, but got ${SECKEYLINES} seckeys."
-    echo "Please ensure that the GPG key you passed is valid."
+    echo "❌ The GPG import failed, expected at least 1, but got ${SECKEYLINES} seckeys."
+    echo "   Please ensure that the GPG key you passed is valid."
     exit 2
 fi
 
@@ -34,8 +34,8 @@ find "/github/workspace/${INPUT_PATH_VAR}" -type f | while read file; do
 
     EXITCODE=$?
     if [ $EXITCODE -ne 0 ]; then
-        echo "GPG detach sign of file failed with exitcode $EXITCODE for: $file"
-        echo "Passphrase MD5: $(echo -n $1 | md5sum -b)"
+        echo "❌ GPG detach sign of file failed with exitcode $EXITCODE for: $file"
+        echo "   Passphrase MD5: $(echo -n $1 | md5sum -b)"
         exit $EXITCODE
     fi
 done
