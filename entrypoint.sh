@@ -38,13 +38,13 @@ if [ "$SECKEYLINES" -gt 0 ]; then
     # find all files
     find "/github/workspace/${INPUT_PATH_VAR}" -type f | while read file; do
         debug "Signing file: $file"
-        gpg --batch --no-tty --pinentry-mode=loopback --passphrase "$1" --armor --detach-sign "$file"
+        gpg --batch --no-tty --pinentry-mode=loopback --passphrase "$GPG_PASSPHRASE" --armor --detach-sign "$file"
 
         EXITCODE=$?
         if [ $EXITCODE -ne 0 ]; then
             echo $EXITCODE > $EXITCODE_FILE
             echo "❌ GPG detach sign of file failed with exitcode $EXITCODE for: $file"
-            echo "   Passphrase length was: $(echo -n $1 | wc -c) chars"
+            echo "   Passphrase length was: $(echo -n $GPG_PASSPHRASE | wc -c) chars"
             echo "   Keyfile length was:    $(echo -n $GPG_KEY_VAR | wc -c) chars"
             break
         fi
