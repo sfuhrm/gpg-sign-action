@@ -16,11 +16,8 @@ gpg-agent --daemon --batch --disable-scdaemon
 
 # check and import GPG key
 debug "Import key"
-echo "${GPG_KEY_VAR}"  | gpg --batch --no-tty --import
+echo "${GPG_KEY_VAR}"  | gpg --batch --no-tty --import --pinentry-mode=loopback --passphrase "$1"
 debug "Imported key"
-
-KEYID=$(gpg --list-secret-keys | grep -A1 -E "^sec "|tail -n 1)
-debug "Secret key ID: $KEYID"
 
 PUBKEYLINES=$(gpg --list-keys|grep -c -E "^pub ")
 debug "Pubkeys: $PUBKEYLINES"
@@ -33,7 +30,7 @@ fi
 # find all files
 find "/github/workspace/${INPUT_PATH_VAR}" -type f | while read file; do
     debug "Signing file: $file"
-    gpg --batch --no-tty --pinentry-mode=loopback --local-user $KEYID --passphrase "$1" --armor --detach-sign "$file"
+    gpg --batch --no-tty --pinentry-mode=loopback --passphrase "$1" --armor --detach-sign "$file"
     EXITCODE=$?
     if [ $EXITCODE -ne 0 ]; then
         echo "GPG detach sign of file failed with exitcode $EXITCODE for: $file"
