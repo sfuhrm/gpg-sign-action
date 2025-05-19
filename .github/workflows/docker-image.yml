@@ -13,10 +13,14 @@ jobs:
       GPG_KEY_VAR: ${{ secrets.GPG_KEYFILE }}
       GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
       GPG_PUBKEY: ${{ vars.GPG_PUBKEY }}
-    permissions:
-      contents: read
+    permissions: {}
     steps:
     - uses: actions/checkout@v4
+
+    - name: Mask secrets
+      run: |
+        echo "::add-mask::${GPG_PASSPHRASE}"
+        echo "::add-mask::${GPG_KEY_VAR}"
 
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag gpg-sign-action
