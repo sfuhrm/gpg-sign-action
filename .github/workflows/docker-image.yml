@@ -41,7 +41,9 @@ jobs:
         gpg --verify github/workspace/testdir/testfile.asc
 
     - name: Test with wrong passphrase
+      continue-on-error: true
       run: |
+        rm -fr github
         mkdir -p github/workspace/testdir
         echo "hello" > github/workspace/testdir/testfile
         docker run -v$(pwd)/github:/github -eGPG_KEY_VAR -eINPUT_PATH_VAR=testdir  gpg-sign-action "THISISNOTYOURPASSPHRASE"; export RETURNCODE=$?
