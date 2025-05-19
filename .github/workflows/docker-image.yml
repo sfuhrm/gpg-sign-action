@@ -39,3 +39,12 @@ jobs:
 
         echo "Verifying signature"
         gpg --verify github/workspace/testdir/testfile.asc
+
+    - name: Test with wrong passphrase
+      run: |
+        mkdir -p github/workspace/testdir
+        echo "hello" > github/workspace/testdir/testfile
+        docker run -v$(pwd)/github:/github -eGPG_KEY_VAR -eINPUT_PATH_VAR=testdir  gpg-sign-action "THISISNOTYOURPASSPHRASE"
+        RETURNCODE=$?
+        echo "Returncode is $RETURNCODE"
+        
